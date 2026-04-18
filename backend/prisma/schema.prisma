@@ -1,0 +1,131 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              String    @id @default(uuid())
+  name            String
+  email           String    @unique
+  password        String?
+  otpCode         String?
+  otpExpiresAt    DateTime?
+  role            Role      @default(CASHIER)
+  jobTitle        String?   @db.VarChar(64)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  CompanyCode     String?   @db.VarChar(32)
+  Status          Int?      @db.TinyInt
+  IsDeleted       Int?      @db.TinyInt
+  CreatedBy       String?   @db.VarChar(32)
+  CreatedDate     DateTime? @default(now()) @db.DateTime(0)
+  LastUpdatedBy   String?   @db.VarChar(32)
+  LastUpdatedDate DateTime? @updatedAt @db.DateTime(0)
+  cashierTransactions    Transaction[] @relation("CashierTransactions")
+  customerTransactions   Transaction[] @relation("CustomerTransactions")
+}
+
+enum Role {
+  ADMIN
+  CASHIER
+  CUSTOMER
+}
+
+model Category {
+  id              String    @id @default(uuid())
+  name            String    @unique
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  CompanyCode     String?   @db.VarChar(32)
+  Status          Int?      @db.TinyInt
+  IsDeleted       Int?      @db.TinyInt
+  CreatedBy       String?   @db.VarChar(32)
+  CreatedDate     DateTime? @default(now()) @db.DateTime(0)
+  LastUpdatedBy   String?   @db.VarChar(32)
+  LastUpdatedDate DateTime? @updatedAt @db.DateTime(0)
+  products        Product[]
+}
+
+model Product {
+  id              String    @id @default(uuid())
+  name            String
+  price           Float
+  image           String?
+  active          Boolean   @default(true)
+  stock           Int       @default(0)
+  categoryId      String
+  category        Category  @relation(fields: [categoryId], references: [id])
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  CompanyCode     String?   @db.VarChar(32)
+  Status          Int?      @db.TinyInt
+  IsDeleted       Int?      @db.TinyInt
+  CreatedBy       String?   @db.VarChar(32)
+  CreatedDate     DateTime? @default(now()) @db.DateTime(0)
+  LastUpdatedBy   String?   @db.VarChar(32)
+  LastUpdatedDate DateTime? @updatedAt @db.DateTime(0)
+  items           TransactionItem[]
+}
+
+model Transaction {
+  id              String   @id @default(uuid())
+  orderId         String   @unique // Midtrans reference
+
+  subtotal        Float
+  tax             Float
+  total           Float
+  cashierId       String?  // Optional since customers can do self-order
+  cashier         User?    @relation("CashierTransactions", fields: [cashierId], references: [id])
+  customerId      String?  // Reference to the customer who placed the order through Self-Service
+  customer        User?    @relation("CustomerTransactions", fields: [customerId], references: [id])
+  customerName    String?  // Name added for tracking who ordered
+  orderType       String   @default("DINE_IN") // DINE_IN, TAKE_AWAY
+  paymentMethod   String   @default("CASH") // CASH, QRIS
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  CompanyCode     String?  @db.VarChar(32)
+  Status          Int?     @db.TinyInt
+  IsDeleted       Int?     @db.TinyInt
+  CreatedBy       String?  @db.VarChar(32)
+  CreatedDate     DateTime? @default(now()) @db.DateTime(0)
+  LastUpdatedBy   String?  @db.VarChar(32)
+  LastUpdatedDate DateTime? @updatedAt @db.DateTime(0)
+  isPrinted       Boolean   @default(false)
+  items           TransactionItem[]
+}
+
+model Setting {
+  id              String   @id @default(uuid())
+  key             String   @unique
+  value           String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  CompanyCode     String?  @db.VarChar(32)
+  Status          Int?     @db.TinyInt
+  IsDeleted       Int?     @db.TinyInt
+  CreatedBy       String?  @db.VarChar(32)
+  CreatedDate     DateTime? @default(now()) @db.DateTime(0)
+  LastUpdatedBy   String?  @db.VarChar(32)
+  LastUpdatedDate DateTime? @updatedAt @db.DateTime(0)
+}
+
+model TransactionItem {
+  id              String      @id @default(uuid())
+  transactionId   String
+  transaction     Transaction @relation(fields: [transactionId], references: [id])
+  productId       String
+  product         Product     @relation(fields: [productId], references: [id])
+  quantity        Int
+  priceAtTime     Float
+  CompanyCode     String?     @db.VarChar(32)
+  Status          Int?        @db.TinyInt
+  IsDeleted       Int?        @db.TinyInt
+  CreatedBy       String?     @db.VarChar(32)
+  CreatedDate     DateTime?   @default(now()) @db.DateTime(0)
+  LastUpdatedBy   String?     @db.VarChar(32)
+  LastUpdatedDate DateTime?   @updatedAt @db.DateTime(0)
+}
