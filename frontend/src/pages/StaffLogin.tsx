@@ -37,7 +37,7 @@ export const StaffLogin = () => {
     setIsLoading(true);
 
     try {
-      const res = await fetch('http://localhost:5000/api/auth/login', {
+      const res = await fetch(import.meta.env.VITE_API_URL + '/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })
@@ -62,7 +62,7 @@ export const StaffLogin = () => {
       const result = await signInWithPopup(auth, googleProvider);
       const idToken = await result.user.getIdToken();
 
-      const res = await fetch('http://localhost:5000/api/auth/google', {
+      const res = await fetch(import.meta.env.VITE_API_URL + '/api/auth/google', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ idToken })
@@ -87,7 +87,7 @@ export const StaffLogin = () => {
     setIsLoading(true);
 
     try {
-      const res = await fetch('http://localhost:5000/api/auth/verify-otp', {
+      const res = await fetch(import.meta.env.VITE_API_URL + '/api/auth/verify-otp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: tempEmail, otpCode })
@@ -118,7 +118,7 @@ export const StaffLogin = () => {
     setIsLoading(true);
 
     try {
-      const res = await fetch('http://localhost:5000/api/auth/forgot-password-otp', {
+      const res = await fetch(import.meta.env.VITE_API_URL + '/api/auth/forgot-password-otp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: tempEmail })
@@ -142,7 +142,7 @@ export const StaffLogin = () => {
     setIsLoading(true);
 
     try {
-      const res = await fetch('http://localhost:5000/api/auth/reset-password', {
+      const res = await fetch(import.meta.env.VITE_API_URL + '/api/auth/reset-password', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: tempEmail, otpCode, newPassword })

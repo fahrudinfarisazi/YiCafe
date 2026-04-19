@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Store, Utensils, Search, ShoppingBag, Plus, Minus, X, ArrowLeft } from 'lucide-react';
 import { useCartStore } from '../store/cartStore';
 import { useAuthStore } from '../store/authStore';
+import { API_URL } from '../config';
 import { Button } from '../components/ui/Button';
 
 export const PublicMenu = () => {
@@ -35,9 +36,9 @@ export const PublicMenu = () => {
       setIsLoading(true);
       try {
         const [ppnRes, prodRes, catRes] = await Promise.all([
-          fetch('http://localhost:5000/api/settings/PPN'),
-          fetch('http://localhost:5000/api/products'), 
-          fetch('http://localhost:5000/api/categories') 
+          fetch(API_URL + '/api/settings/PPN'),
+          fetch(API_URL + '/api/products'), 
+          fetch(API_URL + '/api/categories') 
         ]);
 
         if (ppnRes.ok) {
@@ -94,7 +95,7 @@ export const PublicMenu = () => {
       : customerName;
 
     try {
-      const res = await fetch('http://localhost:5000/api/transactions/customer', {
+      const res = await fetch(API_URL + '/api/transactions/customer', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

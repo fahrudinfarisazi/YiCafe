@@ -25,7 +25,7 @@ export const AppLayout = () => {
     
     const checkNewOrders = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/transactions', {
+        const res = await fetch(import.meta.env.VITE_API_URL + '/api/transactions', {
           headers: { Authorization: `Bearer ${token}` }
         });
         if (res.ok) {

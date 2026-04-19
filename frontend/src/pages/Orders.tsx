@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAuthStore } from '../store/authStore';
+import { API_URL } from '../config';
 import { Utensils, CheckCircle2, Clock, Printer } from 'lucide-react';
 import { Receipt } from '../components/Receipt';
 
@@ -23,7 +24,7 @@ export const OrdersPage = () => {
 
   const fetchOrders = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/transactions', {
+      const res = await fetch(API_URL + '/api/transactions', {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (res.ok) {
@@ -57,7 +58,7 @@ export const OrdersPage = () => {
   const updateStatus = async (id: string, newStatus: string | number) => {
     setOrders(orders.map(o => o.id === id ? { ...o, Status: newStatus as any } : o));
     try {
-      const res = await fetch(`http://localhost:5000/api/transactions/${id}/status`, {
+      const res = await fetch(`${API_URL}/api/transactions/${id}/status`, {
         method: 'PATCH',
         headers: { 
           Authorization: `Bearer ${token}`,

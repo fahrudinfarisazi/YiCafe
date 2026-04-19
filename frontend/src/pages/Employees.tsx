@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuthStore } from '../store/authStore';
+import { API_URL } from '../config';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
 import { UserPlus, Trash2, Shield, User, AlertCircle } from 'lucide-react';
@@ -25,7 +26,7 @@ export const Employees = () => {
   const fetchEmployees = async () => {
     try {
       setIsLoading(true);
-      const res = await fetch('http://localhost:5000/api/users/employees', {
+      const res = await fetch(API_URL + '/api/users/employees', {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (!res.ok) throw new Error('Failed to fetch employees');
@@ -43,7 +44,7 @@ export const Employees = () => {
     setIsSubmitting(true);
     setError('');
     try {
-      const res = await fetch('http://localhost:5000/api/users/employees', {
+      const res = await fetch(API_URL + '/api/users/employees', {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
@@ -72,7 +73,7 @@ export const Employees = () => {
     if (!confirm('Apakah Anda yakin ingin mencabut hak akses karyawan ini?')) return;
     
     try {
-      const res = await fetch(`http://localhost:5000/api/users/employees/${id}`, {
+      const res = await fetch(`${API_URL}/api/users/employees/${id}`, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` }
       });

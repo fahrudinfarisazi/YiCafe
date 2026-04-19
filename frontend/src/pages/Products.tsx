@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuthStore } from '../store/authStore';
+import { API_URL } from '../config';
 import { Button } from '../components/ui/Button';
 import { Plus, Edit2, Trash2, X } from 'lucide-react';
 
@@ -31,8 +32,8 @@ export const ManageProducts = () => {
     setIsLoading(true);
     try {
       const [prodRes, catRes] = await Promise.all([
-        fetch('http://localhost:5000/api/products', { headers: { Authorization: `Bearer ${token}` } }),
-        fetch('http://localhost:5000/api/categories', { headers: { Authorization: `Bearer ${token}` } })
+        fetch(API_URL + '/api/products', { headers: { Authorization: `Bearer ${token}` } }),
+        fetch(API_URL + '/api/categories', { headers: { Authorization: `Bearer ${token}` } })
       ]);
       
       if (prodRes.status === 401 || catRes.status === 401) {
@@ -95,8 +96,8 @@ export const ManageProducts = () => {
 
     try {
       const url = editingProduct 
-        ? `http://localhost:5000/api/products/${editingProduct.id}`
-        : `http://localhost:5000/api/products`;
+        ? `${API_URL}/api/products/${editingProduct.id}`
+        : `${API_URL}/api/products`;
         
       const method = editingProduct ? 'PUT' : 'POST';
 
@@ -131,7 +132,7 @@ export const ManageProducts = () => {
     if (!confirm('Are you sure you want to delete this product?')) return;
     
     try {
-      const res = await fetch(`http://localhost:5000/api/products/${id}`, {
+      const res = await fetch(`${API_URL}/api/products/${id}`, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` }
       });

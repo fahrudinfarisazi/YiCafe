@@ -16,10 +16,10 @@ export const Dashboard = () => {
     const fetchDashboardData = async () => {
       try {
         const [transRes, prodRes] = await Promise.all([
-          fetch('http://localhost:5000/api/transactions', {
+          fetch(import.meta.env.VITE_API_URL + '/api/transactions', {
             headers: { Authorization: `Bearer ${token}` }
           }),
-          fetch('http://localhost:5000/api/products', {
+          fetch(import.meta.env.VITE_API_URL + '/api/products', {
             headers: { Authorization: `Bearer ${token}` }
           })
         ]);

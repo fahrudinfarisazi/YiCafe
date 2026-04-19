@@ -34,8 +34,8 @@ export const POSPage = () => {
     setIsLoading(true);
     try {
       const [prodRes, catRes] = await Promise.all([
-        fetch('http://localhost:5000/api/products', { headers: { Authorization: `Bearer ${token}` } }),
-        fetch('http://localhost:5000/api/categories', { headers: { Authorization: `Bearer ${token}` } })
+        fetch(import.meta.env.VITE_API_URL + '/api/products', { headers: { Authorization: `Bearer ${token}` } }),
+        fetch(import.meta.env.VITE_API_URL + '/api/categories', { headers: { Authorization: `Bearer ${token}` } })
       ]);
       
       const prods = await prodRes.json();
@@ -70,7 +70,7 @@ export const POSPage = () => {
     setIsProcessing(true);
 
     try {
-      const res = await fetch('http://localhost:5000/api/transactions/cashier', {
+      const res = await fetch(import.meta.env.VITE_API_URL + '/api/transactions/cashier', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

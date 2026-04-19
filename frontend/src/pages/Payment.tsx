@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
 import { useCartStore } from '../store/cartStore';
+import { API_URL } from '../config';
 import { ArrowLeft, Clock, Package, CheckCircle2, QrCode, Utensils, AlertCircle } from 'lucide-react';
 
 export const PaymentPage = () => {
@@ -19,7 +20,7 @@ export const PaymentPage = () => {
   useEffect(() => {
     const fetchTx = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/api/transactions/track/${transactionId}`);
+        const res = await fetch(`${API_URL}/api/transactions/track/${transactionId}`);
         if (res.ok) {
           const data = await res.json();
           setTxDetails(data);
@@ -35,7 +36,7 @@ export const PaymentPage = () => {
   useEffect(() => {
     const generateQris = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/api/payments/qris/${transactionId}`, {
+        const res = await fetch(`${API_URL}/api/payments/qris/${transactionId}`, {
           method: 'POST',
           headers: { Authorization: `Bearer ${token}` }
         });
@@ -62,7 +63,7 @@ export const PaymentPage = () => {
 
     const intervalId = setInterval(async () => {
       try {
-        const res = await fetch(`http://localhost:5000/api/payments/status/${orderId}`, {
+        const res = await fetch(`${API_URL}/api/payments/status/${orderId}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         

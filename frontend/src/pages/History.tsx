@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useAuthStore } from '../store/authStore';
+import { API_URL } from '../config';
 import { Printer } from 'lucide-react';
 import { Receipt } from '../components/Receipt';
 
@@ -17,7 +18,7 @@ export const TransactionHistory = () => {
   const fetchTransactions = async () => {
     setIsLoading(true);
     try {
-      const res = await fetch('http://localhost:5000/api/transactions', {
+      const res = await fetch(API_URL + '/api/transactions', {
         headers: { Authorization: `Bearer ${token}` }
       });
       const data = await res.json();
@@ -32,7 +33,7 @@ export const TransactionHistory = () => {
   const handleCancel = async (id: string) => {
     if (!confirm('Are you sure you want to cancel this order? Stock will be returned for CASH payments.')) return;
     try {
-      const res = await fetch(`http://localhost:5000/api/transactions/${id}/cancel`, {
+      const res = await fetch(`${API_URL}/api/transactions/${id}/cancel`, {
         method: 'PUT',
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -62,13 +63,13 @@ export const TransactionHistory = () => {
     }
     
     try {
-      const res = await fetch(`http://localhost:5000/api/transactions/track/${tx.id}`);
+      const res = await fetch(`${API_URL}/api/transactions/track/${tx.id}`);
       if (res.ok) {
          const fullTx = await res.json();
          setReceiptTx(fullTx);
          
          // Mark as printed
-         await fetch(`http://localhost:5000/api/transactions/${tx.id}/print`, {
+         await fetch(`${API_URL}/api/transactions/${tx.id}/print`, {
             method: 'PATCH',
             headers: { Authorization: `Bearer ${token}` }
          });

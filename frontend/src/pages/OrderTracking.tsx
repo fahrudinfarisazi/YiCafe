@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Search, Clock, CheckCircle2, Package, XCircle, ChevronRight, Store } from 'lucide-react';
 import { useAuthStore } from '../store/authStore';
+import { API_URL } from '../config';
 
 const getStatusDetails = (status: number) => {
   switch (status) {
@@ -29,7 +30,7 @@ export const OrderTrackingPage = () => {
     const fetchMyOrders = async () => {
       try {
         setIsLoading(true);
-        const res = await fetch(`http://localhost:5000/api/transactions/customer/me`, {
+        const res = await fetch(`${API_URL}/api/transactions/customer/me`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
