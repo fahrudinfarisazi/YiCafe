@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useAuthStore } from '../store/authStore';
+import { API_URL } from '../config';
 import { TrendingUp, Users, ShoppingBag, DollarSign, Calendar, Clock, CreditCard, Wallet } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, Legend } from 'recharts';
 import { format, subDays, isSameDay, parseISO } from 'date-fns';
@@ -16,10 +17,10 @@ export const Dashboard = () => {
     const fetchDashboardData = async () => {
       try {
         const [transRes, prodRes] = await Promise.all([
-          fetch(import.meta.env.VITE_API_URL + '/api/transactions', {
+          fetch(API_URL + '/api/transactions', {
             headers: { Authorization: `Bearer ${token}` }
           }),
-          fetch(import.meta.env.VITE_API_URL + '/api/products', {
+          fetch(API_URL + '/api/products', {
             headers: { Authorization: `Bearer ${token}` }
           })
         ]);

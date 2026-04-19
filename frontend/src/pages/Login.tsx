@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
+import { API_URL } from '../config';
 import { Input } from '../components/ui/Input';
 import { Button } from '../components/ui/Button';
 import { Store, ShieldCheck, KeyRound, Mail, ArrowLeft, ShieldAlert, LockKeyhole, UserPlus } from 'lucide-react';
@@ -41,7 +42,7 @@ export const LoginPage = () => {
     setIsLoading(true);
 
     try {
-      const res = await fetch(import.meta.env.VITE_API_URL + '/api/auth/login', {
+      const res = await fetch(API_URL + '/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })
@@ -67,7 +68,7 @@ export const LoginPage = () => {
       const result = await signInWithPopup(auth, googleProvider);
       const idToken = await result.user.getIdToken();
 
-      const res = await fetch(import.meta.env.VITE_API_URL + '/api/auth/google', {
+      const res = await fetch(API_URL + '/api/auth/google', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ idToken })
@@ -93,7 +94,7 @@ export const LoginPage = () => {
     setIsLoading(true);
 
     try {
-      const res = await fetch(import.meta.env.VITE_API_URL + '/api/auth/verify-otp', {
+      const res = await fetch(API_URL + '/api/auth/verify-otp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: tempEmail, otpCode })
@@ -125,7 +126,7 @@ export const LoginPage = () => {
       // TAPI ingat! Di `auth.ts` request ini melempar error: user.role === 'CUSTOMER'.
       // WAIT! Saya perhatikan itu, jadi mari kita fetch normal, namun tangani error elegan.
       
-      const res = await fetch(import.meta.env.VITE_API_URL + '/api/auth/forgot-password-otp', {
+      const res = await fetch(API_URL + '/api/auth/forgot-password-otp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: tempEmail })
@@ -152,7 +153,7 @@ export const LoginPage = () => {
     setIsLoading(true);
 
     try {
-      const res = await fetch(import.meta.env.VITE_API_URL + '/api/auth/reset-password', {
+      const res = await fetch(API_URL + '/api/auth/reset-password', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: tempEmail, otpCode, newPassword })
@@ -179,7 +180,7 @@ export const LoginPage = () => {
     setIsLoading(true);
 
     try {
-      const res = await fetch(import.meta.env.VITE_API_URL + '/api/auth/register', {
+      const res = await fetch(API_URL + '/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password, name })

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuthStore } from '../store/authStore';
+import { API_URL } from '../config';
 import { useCartStore } from '../store/cartStore';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
@@ -34,8 +35,8 @@ export const POSPage = () => {
     setIsLoading(true);
     try {
       const [prodRes, catRes] = await Promise.all([
-        fetch(import.meta.env.VITE_API_URL + '/api/products', { headers: { Authorization: `Bearer ${token}` } }),
-        fetch(import.meta.env.VITE_API_URL + '/api/categories', { headers: { Authorization: `Bearer ${token}` } })
+        fetch(API_URL + '/api/products', { headers: { Authorization: `Bearer ${token}` } }),
+        fetch(API_URL + '/api/categories', { headers: { Authorization: `Bearer ${token}` } })
       ]);
       
       const prods = await prodRes.json();
@@ -70,7 +71,7 @@ export const POSPage = () => {
     setIsProcessing(true);
 
     try {
-      const res = await fetch(import.meta.env.VITE_API_URL + '/api/transactions/cashier', {
+      const res = await fetch(API_URL + '/api/transactions/cashier', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

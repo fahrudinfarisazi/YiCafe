@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Navigate, Outlet, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { useAuthStore } from '../../store/authStore';
+import { API_URL } from '../../config';
 import { 
   Store, 
   History, 
@@ -25,7 +26,7 @@ export const AppLayout = () => {
     
     const checkNewOrders = async () => {
       try {
-        const res = await fetch(import.meta.env.VITE_API_URL + '/api/transactions', {
+        const res = await fetch(API_URL + '/api/transactions', {
           headers: { Authorization: `Bearer ${token}` }
         });
         if (res.ok) {
